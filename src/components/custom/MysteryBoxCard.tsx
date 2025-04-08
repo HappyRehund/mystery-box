@@ -16,6 +16,7 @@ interface MysteryBoxCardProps {
   price: number;
   imageUrl?: string;
   categoryName?: string;
+  onAddToCart: () => void;
 }
 
 export default function MysteryBoxCard({
