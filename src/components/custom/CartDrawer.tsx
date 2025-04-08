@@ -7,14 +7,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { X, ShoppingBag } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
-
-interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  imageUrl: string;
-}
+import { useCart, CartItem } from "@/lib/cart-context";
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -22,42 +15,7 @@ interface CartDrawerProps {
 }
 
 export default function CartDrawer({ isOpen, setIsOpen }: CartDrawerProps) {
-  // This is just example data - in a real app, you'd get this from a context/store
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      id: "1",
-      name: "Tech Mystery Box",
-      price: 49.99,
-      quantity: 1,
-      imageUrl: "/placeholder.png",
-    },
-    {
-      id: "2",
-      name: "Gaming Mystery Box",
-      price: 79.99,
-      quantity: 2,
-      imageUrl: "/placeholder.png",
-    },
-  ]);
-
-  const subtotal = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
-
-  const updateQuantity = (id: string, newQuantity: number) => {
-    if (newQuantity < 1) return;
-    
-    setCartItems(
-      cartItems.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
-
-  const removeItem = (id: string) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
-  };
+  const { items, subtotal, updateQuantity, removeItem } = useCart();
 
   // Close drawer on Escape key press
   useEffect(() => {
@@ -106,7 +64,7 @@ export default function CartDrawer({ isOpen, setIsOpen }: CartDrawerProps) {
           </div>
           
           <div className="flex-grow overflow-y-auto p-4">
-            {cartItems.length === 0 ? (
+            {items.length === 0 ? (
               <div className="text-center py-8">
                 <ShoppingBag className="mx-auto h-12 w-12 text-muted-foreground" />
                 <p className="mt-4 text-muted-foreground">Your cart is empty</p>
@@ -120,7 +78,7 @@ export default function CartDrawer({ isOpen, setIsOpen }: CartDrawerProps) {
               </div>
             ) : (
               <ul className="space-y-4">
-                {cartItems.map((item) => (
+                {items.map((item) => (
                   <li key={item.id} className="flex border-b border-border pb-4">
                     <div className="h-16 w-16 relative rounded overflow-hidden flex-shrink-0">
                       <Image
@@ -142,6 +100,7 @@ export default function CartDrawer({ isOpen, setIsOpen }: CartDrawerProps) {
                             size="icon"
                             className="h-6 w-6"
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            disabled={item.quantity <= 1}
                           >
                             -
                           </Button>
@@ -171,7 +130,7 @@ export default function CartDrawer({ isOpen, setIsOpen }: CartDrawerProps) {
             )}
           </div>
           
-          {cartItems.length > 0 && (
+          {items.length > 0 && (
             <div className="p-4 border-t border-border">
               <div className="flex justify-between py-2">
                 <span>Subtotal</span>
@@ -180,18 +139,16 @@ export default function CartDrawer({ isOpen, setIsOpen }: CartDrawerProps) {
               <p className="text-sm text-muted-foreground mb-4">
                 Shipping and taxes calculated at checkout
               </p>
+              <Link href="/cart" onClick={() => setIsOpen(false)}>
+                <Button className="w-full mb-2" size="lg">
+                  View Cart
+                </Button>
+              </Link>
               <Link href="/checkout" onClick={() => setIsOpen(false)}>
-                <Button className="w-full" size="lg">
+                <Button className="w-full" size="lg" variant="outline">
                   Checkout
                 </Button>
               </Link>
-              <Button
-                variant="outline"
-                className="w-full mt-2"
-                onClick={() => setIsOpen(false)}
-              >
-                Continue Shopping
-              </Button>
             </div>
           )}
         </div>

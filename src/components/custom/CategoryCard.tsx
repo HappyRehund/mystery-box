@@ -6,10 +6,9 @@ interface CategoryCardProps {
   id: string;
   name: string;
   description?: string;
-  imageUrl?: string;
 }
 
-export default function CategoryCard({ id, name, description, imageUrl = "/placeholder.png" }: CategoryCardProps) {
+export default function CategoryCard({ id, name, description }: CategoryCardProps) {
   return (
     <Link href={`/${id}`}>
       <Card className="overflow-hidden transition-transform hover:scale-105">

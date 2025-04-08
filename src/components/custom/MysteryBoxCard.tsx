@@ -1,9 +1,13 @@
+// components/custom/MysteryBoxCard.tsx
+'use client';
+
 import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency } from "@/lib/utils";
+import { useCart } from "@/lib/cart-context";
 
 interface MysteryBoxCardProps {
   id: string;
@@ -12,7 +16,6 @@ interface MysteryBoxCardProps {
   price: number;
   imageUrl?: string;
   categoryName?: string;
-  onAddToCart: (id: string) => void;
 }
 
 export default function MysteryBoxCard({
@@ -20,10 +23,15 @@ export default function MysteryBoxCard({
   name,
   description,
   price,
-  imageUrl = "/placeholder.png",
+  imageUrl = "/images/tablet-box.webp",
   categoryName,
-  onAddToCart,
 }: MysteryBoxCardProps) {
+  const { addItem, isLoading } = useCart();
+
+  const handleAddToCart = async () => {
+    await addItem(id);
+  };
+
   return (
     <Card className="overflow-hidden h-full flex flex-col">
       <Link href={`/mystery-box/${id}`} className="relative h-48 w-full">
@@ -52,11 +60,12 @@ export default function MysteryBoxCard({
       </CardContent>
       <CardFooter className="p-4 pt-0">
         <Button
-          onClick={() => onAddToCart(id)}
+          onClick={handleAddToCart}
           className="w-full"
           variant="default"
+          disabled={isLoading}
         >
-          Add to Cart
+          {isLoading ? "Adding..." : "Add to Cart"}
         </Button>
       </CardFooter>
     </Card>

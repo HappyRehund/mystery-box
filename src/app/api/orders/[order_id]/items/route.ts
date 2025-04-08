@@ -5,11 +5,11 @@ import { requireAuth } from '@/lib/auth';
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { order_id: string } }
+  { params }: { params: Promise<{ order_id: string }> }
 ) {
   try {
     const user = await requireAuth(req);
-    const { order_id } = params;
+    const { order_id } = await params;
     const data = await req.json();
     const { mysteryBoxId, quantity = 1 } = data;
 

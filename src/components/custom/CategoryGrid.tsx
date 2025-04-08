@@ -62,7 +62,6 @@ export default function CategoryGrid() {
           id={category.id} 
           name={category.name} 
           description={category.description}
-          imageUrl={category.imageUrl}
         />
       ))}
     </div>

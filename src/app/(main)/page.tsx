@@ -134,15 +134,15 @@ export default function HomePage() {
 
 const testimonials = [
   {
-    name: "Sarah L.",
-    text: "I was skeptical at first, but my Tech Mystery Box exceeded my expectations! The value was incredible.",
+    name: "Johnny G. Plate",
+    text: "Saya cinta WRPL",
   },
   {
-    name: "Michael T.",
-    text: "The Gaming Mystery Box was a perfect gift for my brother. He loved everything inside it!",
+    name: "Anthony",
+    text: "Seadanya aja, tapi saya suka!",
   },
   {
-    name: "Jessica K.",
-    text: "Fast shipping and amazing products. I'll definitely be ordering again soon!",
+    name: "Bahlil Lahadalia",
+    text: "IPK 2 bisa jadi menteri, tapi saya suka!",
   },
 ];

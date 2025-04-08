@@ -3,10 +3,10 @@ import prisma from '@/lib/prisma';
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { slug } = params;
+    const { slug } = await params;
     
     // Assuming categories have a slug field or you're using the id as a slug
     // If using id, you might want to adjust the query accordingly
@@ -42,7 +42,7 @@ export async function GET(
       name: category.name,
       description: category.description,
       totalItems: category._count.mysteryBoxes,
-      // Add any other fields you need
+      
     };
     
     return NextResponse.json(formattedCategory);

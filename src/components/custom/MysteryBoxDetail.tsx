@@ -57,7 +57,7 @@ export default function MysteryBoxDetail({ mysteryBox }: MysteryBoxDetailProps) 
         {/* Image Section */}
         <div className="relative aspect-square overflow-hidden rounded-lg border bg-background">
           <Image
-            src={mysteryBox.imageUrl || "/placeholder.png"}
+            src={mysteryBox.imageUrl || "/images/tablet-box.webp"}
             alt={mysteryBox.name}
             fill
             className="object-cover"

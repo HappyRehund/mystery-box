@@ -3,11 +3,6 @@ import { Suspense } from "react";
 import RelatedMysteryBoxes from "@/components/custom/RelatedMysteryBoxes";
 import MysteryBoxDetail from "@/components/custom/MysteryBoxDetail";
 
-interface MysteryBoxPageProps {
-  params: {
-    id: string;
-  };
-}
 
 async function getMysteryBox(id: string) {
   try {
@@ -24,9 +19,11 @@ async function getMysteryBox(id: string) {
   }
 }
 
-export default async function MysteryBoxPage({ params }: MysteryBoxPageProps) {
-
-  const mysteryBox = await getMysteryBox(params.id);
+export default async function MysteryBoxPage({ params }: {
+  params: Promise<{id: string}>;
+}) {
+  const {id} = await params;
+  const mysteryBox = await getMysteryBox(id);
   
   if (!mysteryBox) {
     notFound();
