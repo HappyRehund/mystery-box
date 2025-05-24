@@ -37,6 +37,7 @@ export default function CartDrawer({ isOpen, setIsOpen }: CartDrawerProps) {
       {/* Backdrop */}
       {isOpen && (
         <div 
+          data-testid="cart-backdrop"
           className="fixed inset-0 bg-black/50 z-40"
           onClick={() => setIsOpen(false)}
         />

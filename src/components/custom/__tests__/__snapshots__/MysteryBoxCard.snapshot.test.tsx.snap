@@ -1,0 +1,132 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MysteryBoxCard Snapshots should match snapshot with all props 1`] = `
+<div>
+  <div
+    class="bg-card text-card-foreground gap-6 rounded-xl border py-6 shadow-sm overflow-hidden h-full flex flex-col"
+    data-slot="card"
+  >
+    <a
+      class="relative h-48 w-full"
+      href="/mystery-box/1"
+    >
+      <img
+        alt="Test Box"
+        class="object-cover"
+        data-nimg="fill"
+        decoding="async"
+        loading="lazy"
+        sizes="100vw"
+        src="/_next/image?url=%2Ftest-image.jpg&w=3840&q=75"
+        srcset="/_next/image?url=%2Ftest-image.jpg&w=640&q=75 640w, /_next/image?url=%2Ftest-image.jpg&w=750&q=75 750w, /_next/image?url=%2Ftest-image.jpg&w=828&q=75 828w, /_next/image?url=%2Ftest-image.jpg&w=1080&q=75 1080w, /_next/image?url=%2Ftest-image.jpg&w=1200&q=75 1200w, /_next/image?url=%2Ftest-image.jpg&w=1920&q=75 1920w, /_next/image?url=%2Ftest-image.jpg&w=2048&q=75 2048w, /_next/image?url=%2Ftest-image.jpg&w=3840&q=75 3840w"
+        style="position: absolute; height: 100%; width: 100%; left: 0px; top: 0px; right: 0px; bottom: 0px; color: transparent;"
+      />
+    </a>
+    <div
+      class="p-4 flex-grow"
+      data-slot="card-content"
+    >
+      <div
+        class="flex justify-between items-start mb-2"
+      >
+        <a
+          href="/mystery-box/1"
+        >
+          <h3
+            class="font-semibold text-foreground hover:text-primary"
+          >
+            Test Box
+          </h3>
+        </a>
+        <span
+          class="font-bold text-primary"
+        >
+          Rp 99,99
+        </span>
+      </div>
+      <span
+        class="inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden border-transparent bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90 mb-2"
+        data-slot="badge"
+      >
+        Test Category
+      </span>
+      <p
+        class="text-sm text-muted-foreground mt-1 line-clamp-3"
+      >
+        Test Description
+      </p>
+    </div>
+    <div
+      class="flex items-center [.border-t]:pt-6 p-4 pt-0"
+      data-slot="card-footer"
+    >
+      <button
+        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 h-9 px-4 py-2 has-[>svg]:px-3 w-full"
+        data-slot="button"
+      >
+        Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MysteryBoxCard Snapshots should match snapshot without optional props 1`] = `
+<div>
+  <div
+    class="bg-card text-card-foreground gap-6 rounded-xl border py-6 shadow-sm overflow-hidden h-full flex flex-col"
+    data-slot="card"
+  >
+    <a
+      class="relative h-48 w-full"
+      href="/mystery-box/1"
+    >
+      <img
+        alt="Test Box"
+        class="object-cover"
+        data-nimg="fill"
+        decoding="async"
+        loading="lazy"
+        sizes="100vw"
+        src="/_next/image?url=%2Fimages%2Ftablet-box.webp&w=3840&q=75"
+        srcset="/_next/image?url=%2Fimages%2Ftablet-box.webp&w=640&q=75 640w, /_next/image?url=%2Fimages%2Ftablet-box.webp&w=750&q=75 750w, /_next/image?url=%2Fimages%2Ftablet-box.webp&w=828&q=75 828w, /_next/image?url=%2Fimages%2Ftablet-box.webp&w=1080&q=75 1080w, /_next/image?url=%2Fimages%2Ftablet-box.webp&w=1200&q=75 1200w, /_next/image?url=%2Fimages%2Ftablet-box.webp&w=1920&q=75 1920w, /_next/image?url=%2Fimages%2Ftablet-box.webp&w=2048&q=75 2048w, /_next/image?url=%2Fimages%2Ftablet-box.webp&w=3840&q=75 3840w"
+        style="position: absolute; height: 100%; width: 100%; left: 0px; top: 0px; right: 0px; bottom: 0px; color: transparent;"
+      />
+    </a>
+    <div
+      class="p-4 flex-grow"
+      data-slot="card-content"
+    >
+      <div
+        class="flex justify-between items-start mb-2"
+      >
+        <a
+          href="/mystery-box/1"
+        >
+          <h3
+            class="font-semibold text-foreground hover:text-primary"
+          >
+            Test Box
+          </h3>
+        </a>
+        <span
+          class="font-bold text-primary"
+        >
+          Rp 99,99
+        </span>
+      </div>
+    </div>
+    <div
+      class="flex items-center [.border-t]:pt-6 p-4 pt-0"
+      data-slot="card-footer"
+    >
+      <button
+        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 h-9 px-4 py-2 has-[>svg]:px-3 w-full"
+        data-slot="button"
+      >
+        Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+`;

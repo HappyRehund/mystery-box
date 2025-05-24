@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CategoryHeader Snapshots should match snapshot with all props 1`] = `
+<div>
+  <div
+    class="space-y-2"
+  >
+    <div
+      class="flex items-center gap-3"
+    >
+      <h1
+        class="text-3xl font-bold tracking-tight"
+      >
+        Test Category
+      </h1>
+      <span
+        class="inline-flex items-center justify-center rounded-md border text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden border-transparent bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90 px-2 py-1"
+        data-slot="badge"
+      >
+        5
+         items
+      </span>
+    </div>
+    <p
+      class="text-muted-foreground"
+    >
+      Test Description
+    </p>
+  </div>
+</div>
+`;
+
+exports[`CategoryHeader Snapshots should match snapshot without optional props 1`] = `
+<div>
+  <div
+    class="space-y-2"
+  >
+    <div
+      class="flex items-center gap-3"
+    >
+      <h1
+        class="text-3xl font-bold tracking-tight"
+      >
+        Test Category
+      </h1>
+    </div>
+  </div>
+</div>
+`;
