@@ -1,4 +1,4 @@
-## Test terdapat di /src/components/custom/__tests__/CartDrawer.snapshot.test.tsx
+## Test terdapat di /src/components/custom/__tests__/
 
 KOM A
 Kelompok WRPL : 
