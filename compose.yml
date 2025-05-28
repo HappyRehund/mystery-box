@@ -1,0 +1,35 @@
+services:
+  mystery-box-db:
+    image: postgres:17.2-alpine
+    env_file: .env
+    ports:
+      - "5432:5432"
+    networks:
+      - mystery-box-network
+    volumes:
+      - mystery-box-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-postgres}"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  mystery-box-api: 
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
+    ports:
+      - "3000:3000"
+    networks:
+      - mystery-box-network
+    depends_on:
+      mystery-box-db:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  mystery-box-db-data:
+
+networks:
+  mystery-box-network:
