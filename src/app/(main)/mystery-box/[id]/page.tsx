@@ -6,7 +6,7 @@ import MysteryBoxDetail from "@/components/custom/MysteryBoxDetail";
 
 async function getMysteryBox(id: string) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/mystery-boxes/${id}`);
+    const res = await fetch(`${process.env.API_URL}/api/mystery-boxes/${id}`);
     
     if (!res.ok) {
       return null;

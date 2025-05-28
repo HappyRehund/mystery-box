@@ -21,6 +21,18 @@ interface CartContextType {
   removeItem: (itemId: string) => Promise<void>;
   subtotal: number;
   itemCount: number;
+  clearCart: () => Promise<void>;
+  processCheckout: (checkoutData: CheckoutData) => Promise<{ success: boolean; orderId?: string; error?: string }>;
+}
+
+export interface CheckoutData {
+  email: string;
+  name: string;
+  address: string;
+  city: string;
+  postalCode: string;
+  country: string;
+  paymentMethod: string;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -42,27 +54,58 @@ export function CartProvider({ children }: { children: ReactNode }) {
         
         if (storedOrderId) {
           try {
-            // Try to fetch the existing order
-            const response = await fetch(`/api/orders/${storedOrderId}`);
+            // Check if user is authenticated
+            const authResponse = await fetch('/api/auth/me');
             
-            if (response.ok) {
-              const order = await response.json();
-              setOrderId(order.id);
+            if (authResponse.ok) {
+              // User is authenticated, fetch their order
+              const response = await fetch(`/api/orders/${storedOrderId}`);
               
-              // Transform order items to CartItems
-              const cartItems: CartItem[] = order.items.map((item: any) => ({
-                id: item.id,
-                mysteryBoxId: item.mysteryBoxId,
-                name: item.mysteryBox.name,
-                price: parseFloat(item.price.toString()),
-                quantity: item.quantity,
-                imageUrl: item.mysteryBox.imageUrl || '/placeholder.png',
-              }));
-              
-              setItems(cartItems);
+              if (response.ok) {
+                const order = await response.json();
+                setOrderId(order.id);
+                
+                // Transform order items to CartItems
+                const cartItems: CartItem[] = order.items.map((item: any) => ({
+                  id: item.id,
+                  mysteryBoxId: item.mysteryBoxId,
+                  name: item.mysteryBox.name,
+                  price: parseFloat(item.price.toString()),
+                  quantity: item.quantity,
+                  imageUrl: item.mysteryBox.imageUrl || '/placeholder.png',
+                }));
+                
+                setItems(cartItems);
+              } else {
+                await createNewOrder();
+              }
             } else {
-              // If order not found or not accessible, create new order
-              await createNewOrder();
+              // User not authenticated, try to fetch as guest
+              const guestUserId = localStorage.getItem('guestUserId');
+              
+              if (guestUserId) {
+                const response = await fetch(`/api/orders/${storedOrderId}?guestId=${guestUserId}`);
+                
+                if (response.ok) {
+                  const order = await response.json();
+                  setOrderId(order.id);
+                  
+                  const cartItems: CartItem[] = order.items.map((item: any) => ({
+                    id: item.id,
+                    mysteryBoxId: item.mysteryBoxId,
+                    name: item.mysteryBox.name,
+                    price: parseFloat(item.price.toString()),
+                    quantity: item.quantity,
+                    imageUrl: item.mysteryBox.imageUrl || '/placeholder.png',
+                  }));
+                  
+                  setItems(cartItems);
+                } else {
+                  await createNewOrder();
+                }
+              } else {
+                await createNewOrder();
+              }
             }
           } catch (error) {
             console.error("Error fetching cart:", error);
@@ -96,15 +139,19 @@ export function CartProvider({ children }: { children: ReactNode }) {
         const newOrder = await response.json();
         setOrderId(newOrder.id);
         localStorage.setItem('orderId', newOrder.id);
+        
+        // Store guest user ID if not authenticated
+        if (newOrder.userId.startsWith('guest-')) {
+          localStorage.setItem('guestUserId', newOrder.userId);
+        }
+        
         setItems([]);
       } else {
         console.error("Failed to create order:", await response.text());
-        // Handle guest cart in localStorage if API fails
         setItems([]);
       }
     } catch (error) {
       console.error("Error creating order:", error);
-      // Handle guest cart in localStorage if API fails
       setItems([]);
     }
   };
@@ -112,8 +159,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const addItem = async (mysteryBoxId: string) => {
     if (!orderId) {
       await createNewOrder();
-      toast.error("Could not add item. Please try again.");
-      return;
+      if (!orderId) {
+        toast.error("Could not add item. Please try again.");
+        return;
+      }
     }
 
     setIsLoading(true);
@@ -217,6 +266,67 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const clearCart = async () => {
+    try {
+      setItems([]);
+      setOrderId(null);
+      localStorage.removeItem('orderId');
+      localStorage.removeItem('guestUserId');
+      toast.success("Cart cleared");
+    } catch (error) {
+      console.error("Error clearing cart:", error);
+      toast.error("Failed to clear cart");
+    }
+  };
+
+  const processCheckout = async (checkoutData: CheckoutData): Promise<{ success: boolean; orderId?: string; error?: string }> => {
+    if (!orderId || items.length === 0) {
+      return { success: false, error: "No items in cart" };
+    }
+
+    setIsLoading(true);
+    try {
+      // Calculate totals
+      const shipping = subtotal >= 100 ? 0 : 8.99;
+      const tax = subtotal * 0.1;
+      const total = subtotal + shipping + tax;
+
+      // Process checkout
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          orderId,
+          ...checkoutData,
+          subtotal,
+          shipping,
+          tax,
+          total,
+        }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        
+        // Clear cart after successful checkout
+        await clearCart();
+        
+        toast.success("Order placed successfully!");
+        return { success: true, orderId: result.orderId };
+      } else {
+        const error = await response.json();
+        return { success: false, error: error.error || "Checkout failed" };
+      }
+    } catch (error) {
+      console.error("Checkout error:", error);
+      return { success: false, error: "Network error during checkout" };
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -228,6 +338,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
         removeItem,
         subtotal,
         itemCount,
+        clearCart,
+        processCheckout,
       }}
     >
       {children}

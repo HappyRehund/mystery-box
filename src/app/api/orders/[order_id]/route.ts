@@ -8,13 +8,28 @@ export async function GET(
   { params }: { params: Promise<{ order_id: string }> }
 ) {
   try {
-    const user = await requireAuth(req);
     const { order_id } = await params;
+    const { searchParams } = new URL(req.url);
+    const guestId = searchParams.get('guestId');
+
+    // Try to get authenticated user, but allow guest access
+    let user = null;
+    try {
+      user = await requireAuth(req);
+    } catch (error) {
+      // User not authenticated, check for guest access
+      if (!guestId) {
+        return NextResponse.json(
+          { error: 'Unauthorized' },
+          { status: 401 }
+        );
+      }
+    }
 
     const order = await prisma.order.findUnique({
       where: {
         id: order_id,
-        userId: user.id,
+        userId: user?.id,
       },
       include: {
         items: {
@@ -35,13 +50,6 @@ export async function GET(
 
     return NextResponse.json(order);
   } catch (error) {
-    if ( error instanceof Error && error.message === 'Unauthorized') {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
-
     console.error('Failed to fetch order:', error);
     return NextResponse.json(
       { error: 'Failed to fetch order' },

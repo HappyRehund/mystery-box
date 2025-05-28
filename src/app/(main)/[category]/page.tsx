@@ -17,7 +17,7 @@ interface CategoryPageProps {
 
 async function getCategoryInfo(slug: string) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/categories/${slug}`);
+    const res = await fetch(`${process.env.API_URL}/api/categories/${slug}`);
    
     if (!res.ok) {
       return null;

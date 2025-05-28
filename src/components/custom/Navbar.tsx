@@ -39,6 +39,12 @@ export default function Navbar() {
               >
                 Dashboard
               </Link>
+              <Link
+                href="/orders"
+                className="text-foreground hover:text-primary px-3 py-2 rounded-md text-sm font-medium"
+              >
+                Your Orders
+              </Link>
             </div>
           </div>
           <div className="flex items-center">
@@ -98,6 +104,12 @@ export default function Navbar() {
             >
               Dashboard
             </Link>
+            <Link
+                href="/orders"
+                className="text-foreground hover:text-primary px-3 py-2 rounded-md text-sm font-medium"
+              >
+                Your Orders
+              </Link>
           </div>
         </div>
       )}
