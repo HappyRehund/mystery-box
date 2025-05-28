@@ -1,33 +1,14 @@
 // prisma/seed.ts
-import { PrismaClient, OrderStatus, PaymentStatus } from "@prisma/client";
-import { Decimal } from "@prisma/client/runtime/library";
+import { PrismaClient, OrderStatus, PaymentStatus } from "../src/generated/client";
+import { Decimal } from "../src/generated/client/runtime/library";
 
 const prisma = new PrismaClient();
 
 async function main() {
   // Bersihkan database jika diperlukan
-  await prisma.payment.deleteMany();
-  await prisma.orderItem.deleteMany();
-  await prisma.order.deleteMany();
   await prisma.mysteryBox.deleteMany();
   await prisma.category.deleteMany();
-  await prisma.user.deleteMany();
   console.log("Database cleared!");
-
-  // Buat users
-  const user1 = await prisma.user.create({
-    data: {
-      email: "user1@example.com",
-      name: "User One",
-    },
-  });
-
-  const user2 = await prisma.user.create({
-    data: {
-      email: "user2@example.com",
-      name: "User Two",
-    },
-  });
 
   // Buat categories
   const techCategory = await prisma.category.create({
@@ -409,180 +390,6 @@ async function main() {
       price: new Decimal(89.99),
       imageUrl: "/images/tablet-box.webp",
       categoryId: fashionCategory.id,
-    },
-  });
-
-  // Buat order untuk user1
-  const order1 = await prisma.order.create({
-    data: {
-      userId: user1.id,
-      status: OrderStatus.PAID,
-      totalPrice: new Decimal(99.99),
-    },
-  });
-
-  // Tambahkan order item ke order1
-  await prisma.orderItem.create({
-    data: {
-      orderId: order1.id,
-      mysteryBoxId: techBox.id,
-      quantity: 1,
-      price: techBox.price,
-    },
-  });
-
-  // Buat payment untuk order1
-  await prisma.payment.create({
-    data: {
-      orderId: order1.id,
-      amount: new Decimal(99.99),
-      status: PaymentStatus.COMPLETED,
-      method: "Credit Card",
-    },
-  });
-
-  // Buat order untuk user2 dengan multiple items
-  const order2 = await prisma.order.create({
-    data: {
-      userId: user2.id,
-      status: OrderStatus.PENDING,
-      totalPrice: new Decimal(279.98), // 199.99 + 79.99
-    },
-  });
-
-  // Tambahkan order items ke order2
-  await prisma.orderItem.create({
-    data: {
-      orderId: order2.id,
-      mysteryBoxId: premiumTechBox.id,
-      quantity: 1,
-      price: premiumTechBox.price,
-    },
-  });
-
-  await prisma.orderItem.create({
-    data: {
-      orderId: order2.id,
-      mysteryBoxId: fashionBox.id,
-      quantity: 1,
-      price: fashionBox.price,
-    },
-  });
-
-  // Buat payment untuk order2
-  await prisma.payment.create({
-    data: {
-      orderId: order2.id,
-      amount: new Decimal(279.98),
-      status: PaymentStatus.PENDING,
-      method: "PayPal",
-    },
-  });
-
-  const order3 = await prisma.order.create({
-    data: {
-      userId: user1.id,
-      status: OrderStatus.PROCESSING,
-      totalPrice: new Decimal(169.98), // Wellness Essentials + Snack Attack
-    },
-  });
-
-  await prisma.orderItem.create({
-    data: {
-      orderId: order3.id,
-      mysteryBoxId: wellnessBox.id,
-      quantity: 1,
-      price: wellnessBox.price,
-    },
-  });
-
-  await prisma.orderItem.create({
-    data: {
-      orderId: order3.id,
-      mysteryBoxId: snackBox.id,
-      quantity: 1,
-      price: snackBox.price,
-    },
-  });
-
-  await prisma.payment.create({
-    data: {
-      orderId: order3.id,
-      amount: new Decimal(169.98),
-      status: PaymentStatus.COMPLETED,
-      method: "OVO",
-    },
-  });
-
-  // Order tambahan untuk user2 dengan banyak item
-  const order4 = await prisma.order.create({
-    data: {
-      userId: user2.id,
-      status: OrderStatus.SHIPPED,
-      totalPrice: new Decimal(279.97), // Gaming Gear + Action Figure Frenzy + Kids Fun
-    },
-  });
-
-  await prisma.orderItem.create({
-    data: {
-      orderId: order4.id,
-      mysteryBoxId: gamingBox.id,
-      quantity: 1,
-      price: gamingBox.price,
-    },
-  });
-
-  await prisma.orderItem.create({
-    data: {
-      orderId: order4.id,
-      mysteryBoxId: actionFigureBox.id,
-      quantity: 1,
-      price: actionFigureBox.price,
-    },
-  });
-
-  await prisma.orderItem.create({
-    data: {
-      orderId: order4.id,
-      mysteryBoxId: kidsBox.id,
-      quantity: 1,
-      price: kidsBox.price,
-    },
-  });
-
-  await prisma.payment.create({
-    data: {
-      orderId: order4.id,
-      amount: new Decimal(279.97),
-      status: PaymentStatus.COMPLETED,
-      method: "GoPay",
-    },
-  });
-
-  // Order tambahan untuk user1 dengan satu item
-  const order5 = await prisma.order.create({
-    data: {
-      userId: user1.id,
-      status: OrderStatus.DELIVERED,
-      totalPrice: new Decimal(114.99), // Sports Gear
-    },
-  });
-
-  await prisma.orderItem.create({
-    data: {
-      orderId: order5.id,
-      mysteryBoxId: sportsBox2.id,
-      quantity: 1,
-      price: sportsBox2.price,
-    },
-  });
-
-  await prisma.payment.create({
-    data: {
-      orderId: order5.id,
-      amount: new Decimal(114.99),
-      status: PaymentStatus.COMPLETED,
-      method: "Bank Transfer",
     },
   });
 
