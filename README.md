@@ -15,7 +15,7 @@ The `Dockerfile` in this project is designed to build an optimized and secure Ne
     *   Copies `node_modules` from the `deps` stage.
     *   Copies the entire application source code.
     *   Generates the Prisma client.
-    *   Compiles the TypeScript seed file to JavaScript (if needed in production).
+    *   Compiles the TypeScript seed file to JavaScript.
     *   Builds the Next.js application using `pnpm build`. `NEXT_TELEMETRY_DISABLED=1` is used to disable Next.js telemetry.
 
 3.  **`runner` Stage (Production Image):**
@@ -31,7 +31,7 @@ The `Dockerfile` in this project is designed to build an optimized and secure Ne
     *   Changes ownership of application files to the `nextjs` user and grants execute permission to `init.sh`.
     *   Switches to the `nextjs` user.
     *   Exposes port `3000`.
-    *   The `CMD` instruction runs `init.sh` (likely for database migrations and seeding) and then starts the Next.js server (`node server.js`).
+    *   The `CMD` instruction runs `init.sh` and then starts the Next.js server (`node server.js`).
 
 **Multi-stage Build:** The use of multi-stage builds (deps -> builder -> runner) ensures that the final production image (`runner`) contains only the artifacts and dependencies strictly necessary to run the application. This results in a significantly smaller image size, improved security, and reduced deployment times.
 
@@ -59,7 +59,7 @@ The `compose.yml` file is used to define and run multi-container Docker applicat
 *   `mystery-box-db-data`: This volume ensures that database data persists even if the `mystery-box-db` container is stopped or removed.
 
 **Networks:**
-*   `mystery-box-network`: This custom network allows communication between containers (`mystery-box-db` and `mystery-box-api`) using their service names.
+*   `mystery-box-network`: This custom network allows communication between containers using their service names.
 
 ### How to Run the Application
 
@@ -83,7 +83,7 @@ DATABASE_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@mystery-box-db:
 NEXT_PUBLIC_API_URL=http://localhost:3000
 
 
-# Others (adjust according to application needs)
+# Others
 ```
 
 #### 1. Using Docker Compose (Recommended)
