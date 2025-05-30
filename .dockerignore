@@ -18,3 +18,5 @@ coverage
 .jest
 .swc
 .turbo
+node_modules
+**/generated/
