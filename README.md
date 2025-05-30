@@ -93,7 +93,7 @@ This is the easiest way to run the application along with its database.
     docker compose up -d
     ```
     This command will build the images (if they don't already exist), create, and start the containers in the background.
-5.  The application will be accessible at `http://localhost:3000` and the database at `localhost:5432`.
+5.  The application will be accessible at `http://localhost:3000` and the database at `<your-neondb-url>`.
 
 To stop the services:
 ```bash
