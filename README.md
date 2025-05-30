@@ -73,6 +73,11 @@ NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_<your-pk>
 CLERK_SECRET_KEY=sk_test_<your-sk>
 
 DATABASE_URL="postgresql://<neondb-url>"
+#or your local database
+POSTGRES_USER=your_db_user
+POSTGRES_PASSWORD=your_db_password
+POSTGRES_DB=your_db_name
+DATABASE_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@mystery-box-db:5432/${POSTGRES_DB}?schema=public"
 
 # next.js
 NEXT_PUBLIC_API_URL=http://localhost:3000
