@@ -1,5 +1,10 @@
 ## Project Documentation
 
+### Kelompok Sampit Warrior 
+- Andrian Danar Perdana (23/513040/PA/21917)
+- Daffa Indra Wibowo (23/518514/PA/22253)
+- Rayhan Firdaus Ardian (23/519095/PA/22279)
+- Muhammad Argya Vityasy (23/522547/PA/22475)
 ### Dockerfile
 
 The `Dockerfile` in this project is designed to build an optimized and secure Next.js application image using multi-stage builds.
