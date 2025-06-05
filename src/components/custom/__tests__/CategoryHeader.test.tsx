@@ -1,3 +1,4 @@
+// src/app/api/categories/route.test.ts
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import CategoryHeader from '../CategoryHeader'

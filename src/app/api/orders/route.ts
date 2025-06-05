@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { requireAuth } from '@/lib/auth';
+import { Prisma } from '@/generated/client';
 
 export async function GET(req: NextRequest) {
   try {
@@ -40,20 +41,35 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    // Try to get authenticated user, but allow guest orders
-    let user = null;
+    let authUser = null;
+    let userIdToUse: string;
+
     try {
-      user = await requireAuth(req);
+      // requireAuth should return an object like { id: string } if authenticated
+      const userSession = await requireAuth(req);
+      authUser = userSession; // Assuming requireAuth returns the user object or session
+      userIdToUse = authUser.id;
     } catch (error) {
       // User not authenticated, proceed as guest
-    }
+      const guestId = `guest-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
-    // Generate a unique guest ID if no user
-    const userId = user?.id || `guest-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      // Ensure a guest user record exists in the User table
+      await prisma.user.upsert({
+        where: { id: guestId },
+        update: {}, // No update needed if guest user already exists
+        create: {
+          id: guestId,
+          email: `${guestId}@guest.example.com`, // Provide a unique placeholder email
+          // name: "Guest User", // Provide if 'name' is also required and not nullable
+          // Add any other required fields for the User model here
+        },
+      });
+      userIdToUse = guestId;
+    }
 
     const order = await prisma.order.create({
       data: {
-        userId: userId,
+        userId: userIdToUse,
         status: 'PENDING',
       },
     });
@@ -61,13 +77,19 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(order, { status: 201 });
   } catch (error) {
     console.error('Failed to create order:', error);
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      // Log specific Prisma errors
+      console.error('Prisma Error Code:', error.code);
+      if (error.code === 'P2003') {
+        console.error('Foreign key constraint failed on field:', error.meta?.field_name);
+      }
+    }
     return NextResponse.json(
       { error: 'Failed to create order' },
       { status: 500 }
     );
   }
 }
-
 // Add new endpoint for guest orders
 export async function PATCH(req: NextRequest) {
   try {
