@@ -57,6 +57,5 @@ RUN chown -R nextjs:nodejs /app && \
     chmod +x ./prisma/init.sh
     
 USER nextjs
-
-EXPOSE 3000
+# Test for action
 CMD ["sh", "-c", "sh prisma/init.sh && node server.js"]
